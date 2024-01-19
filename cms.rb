@@ -10,6 +10,8 @@ configure do
   set :session_secret, "3619d4360dc051e2b3e789b4e874854348810d8eca8efa4e8aa2656296948e6c"
 end
 
+SUPPORTED_FILETYPES = [".md", ".txt"]
+
 def data_path
   if ENV["RACK_ENV"] == "test"
     File.expand_path("../test/data", __FILE__)
@@ -20,7 +22,7 @@ end
 
 def render_markdown(text)
   markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
-  text = markdown.render(text)
+  markdown.render(text)
 end
 
 def load_file_content(path)
@@ -63,6 +65,28 @@ def valid_credentials?(username, password)
   else
     false
   end
+end
+
+def validate_new(filename)
+  if filename.strip.empty?
+    session[:message] = "A name is required."
+    status 422
+    erb :new
+  elsif !SUPPORTED_FILETYPES.include?(File.extname(filename))
+    session[:message] = "That file extension type is not currently supported."
+    status 422
+    erb :new
+  else
+    create_new(filename, "")
+  end
+end
+
+def create_new(filename, contents)
+  file_path = File.join(data_path, filename)
+  File.write(file_path, contents)
+
+  session[:message] = "#{filename} has been created."
+  redirect "/"
 end
 
 get "/" do
@@ -127,18 +151,19 @@ post "/create" do
   require_signed_in_user
 
   filename = params[:filename].to_s
+  validate_new(filename)
+end
 
-  if filename.strip.empty?
-    session[:message] = "A name is required."
-    status 422
-    erb :new
-  else
-    file_path = File.join(data_path, filename)
-    File.write(file_path, "")
+post "/duplicate" do
+  require_signed_in_user
 
-    session[:message] = "#{filename} has been created."
-    redirect "/"
-  end
+  file_name = params[:filename].to_s
+  new_file_name = File.basename(file_name, ".*") + "-1" + File.extname(file_name)
+
+  file_path = File.join(data_path, file_name)
+  contents = File.read(file_path)
+
+  create_new(new_file_name, contents)
 end
 
 post "/:filename" do

@@ -2,12 +2,17 @@
   <% @files.each do |file| %>
     <li>
       <a href="/<%= file %>"><%= file %></a>
-      <form class="inline" action="/<%= file %>/edit" method="get">
-        <button type="submit">Edit</button>
-      </form>
-      <form class="inline" action="/<%= file %>/delete" method="post">
-        <button name="filename" value=<%= file %> type="submit">Delete</button>
-      </form>
+      <div>
+        <form class="inline" action="/<%= file %>/edit" method="get">
+          <button type="submit">Edit</button>
+        </form>
+        <form class="inline" action="/<%= file %>/delete" method="post">
+          <button name="filename" value=<%= file %> type="submit">Delete</button>
+        </form>
+        <form class="inline" action="/duplicate" method="post">
+          <button name="filename" value=<%= file %> type="submit">Duplicate</button>
+        </form>
+      </div>
     </li>
   <% end %>
 </ul>
