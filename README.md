@@ -1,20 +1,19 @@
 # Overview
-This document contains my "first draft" implementation notes for some of the assignments in the "File-based CMS" project for RB175. My idea here is to practice translating high-level requirements into implementation steps. The requirements are copied from the Launch School lessons, and I'm writing the implementation steps before viewing the ones provided by Launch School.
-
+This is a simple file-based content management system written in Ruby. My aim with the project was to practice translating high-level requirements into implementation steps. Below are some notes I took to track my progress and stay organized.
 
 ## Editing Document Content
 
 ### Requirements
 - When a user views the index page, they should see an “Edit” link next to each document name.
 - When a user clicks an edit link, they should be taken to an edit page for the appropriate document.
-- When a user views the edit page for a document, that document's content should appear within a textarea:
-- When a user edits the document's content and clicks a “Save Changes” button, they are redirected to the index page and are shown a message: $FILENAME has been updated.
+- When a user views the edit page for a document, that document's content should appear within a textarea.
+- When a user edits the document's content and clicks a “Save Changes” button, they are redirected to the index page and are shown a message.
 
 ### Implementation
 1) Add a link in `index.erb` next to each document name
     - the link should make a `GET` request to `'/:filename/edit/'`
 2) Make a new view template called edit.erb
-    - make a "textarea" ??? within a form
+    - make a `textarea` within a form
     - display the document's current text in that area
     - add a "Save Changes" button
 3) The "Save Changes" button should make a `POST` request to `'/:filename/edit/'`
@@ -27,7 +26,6 @@ This document contains my "first draft" implementation notes for some of the ass
 
 ### Requirements
 - When a user views the index page, they should see a "delete" button next to each document.
-
 - When a user clicks a "delete" button, the application should delete the appropriate document and display a message: "$FILENAME has been deleted".
 
 ### Implementation
@@ -60,8 +58,7 @@ This document contains my "first draft" implementation notes for some of the ass
         - display a message
         - redisplay the sign-in form
         - use the previously entered username as default text for username input field
-4) (I gave up on these notes at this point and referred to LS instead)
-
+4) (The full truth is that I veered off the golden path of note taking here and went rogue... oops)
 
 
 ## Restricting Actions to Sign-In Users
@@ -76,7 +73,6 @@ This document contains my "first draft" implementation notes for some of the ass
 
 ### Implementation
 1) Create a method for the redirecting and message displaying 
-    - (where to put it???)
 2) Create a method for determining whether or not the user is signed in
 3) In each of the situations described above, call (2) and then as necessary (1)
 4) Write tests
@@ -88,5 +84,5 @@ This document contains my "first draft" implementation notes for some of the ass
 An administrator should be able to modify the list of users who may sign into the application by editing a configuration file in their text editor.
 
 ### Implementation
-1) Create a YAML file to store user credentials (but where??)
+1) Create a YAML file to store user credentials
 2) Load the file to validate user input when signing in
